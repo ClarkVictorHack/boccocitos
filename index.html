@@ -1,15 +1,38 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LXG5F7LK42"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+  <style>
+    #mapbox-puntos { width: 100%; height: 400px; border-radius: 1rem; margin: 0 auto; min-height: 300px; }
+  </style>
+  <!-- Mapbox CSS -->
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+  <style>
+    #mapbox-puntos { width: 100%; height: 400px; border-radius: 1rem; margin: 0 auto; }
+    .marker {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: #1e90ff;
+      box-shadow: 0 0 0 3px rgba(30,144,255,.25);
+      border: 2px solid #fff;
+      cursor: pointer;
+    }
+    .popup h3 { margin: 0 0 4px; font-size: 14px; }
+    .popup p { margin: 0; font-size: 12px; }
+  </style>
+  <!-- Mapbox JS -->
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+  <!-- Mapbox CSS -->
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+  <!-- Mapbox JS -->
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RPVLT6BMEB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-    gtag('config', 'G-LXG5F7LK42');
-  </script>
+  gtag('config', 'G-RPVLT6BMEB');
+</script>
   
   <!-- Metricool Analytics -->
   <script>
@@ -35,7 +58,6 @@
     <nav>
       <div class="logo">
         <img src="img/logotrazo.png" alt="BoccoCitos Logo" style="height: 40px; width: auto; margin-right: 10px; border-radius: 4px;">
-        BoccoCitos
       </div>
       <ul class="menu">
         <li><a href="#inicio">Inicio</a></li>
@@ -54,7 +76,6 @@
     <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 2rem;">
       <a href="productos.html" class="btn-primary" style="display: inline-block; text-decoration: none;">Conoce nuestros productos</a>
       <a href="formulario-distribuidores.html" style="display: inline-block; text-decoration: none; background-color: var(--verde-oliva); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 500; transition: all 0.3s ease;">Ser Distribuidor</a>
-    </div>
   </section>
 
   <!-- Sección Productos -->
@@ -63,10 +84,9 @@
     <div class="productos-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto;">
       <!-- Pan de Yuca -->
       <div class="producto-card">
-        <img src="img/pan de yuca.png" alt="Pan de Yuca">
+  <img src="img/pan de yuca.png" alt="Pan de Yuca">
         <div class="card-body">
           <h3>Pan de Yuca</h3>
-          <p>Suave y esponjoso, con la textura perfecta que evoca la tradición de la tierra.</p>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
             <span style="font-size: 1.2rem; font-weight: bold; color: var(--verde-oliva);">$3.50</span>
             <a href="pan-de-yuca.html" class="btn-secondary" style="text-decoration: none; display: inline-block;">Ver más</a>
@@ -75,10 +95,9 @@
       </div>
       <!-- María Pipona de Maduro -->
       <div class="producto-card">
-        <img src="img/maria pipona de maduro.jpg" alt="María Pipona de Maduro">
+  <img src="img/maria pipona de maduro.jpg" alt="María Pipona de Maduro">
         <div class="card-body">
           <h3>María Pipona de Maduro</h3>
-          <p>La mezcla ideal de dulzura y firmeza para disfrutar en cualquier momento del día.</p>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
             <span style="font-size: 1.2rem; font-weight: bold; color: var(--verde-oliva);">$3.00</span>
             <a href="maria-pipona-maduro.html" class="btn-secondary" style="text-decoration: none; display: inline-block;">Ver más</a>
@@ -87,7 +106,7 @@
       </div>
       <!-- Mini Bolones de Maduro -->
       <div class="producto-card">
-        <img src="img/mini bolon de maduro.png" alt="Mini Bolones de Maduro">
+  <img src="img/mini bolon de maduro.png" alt="Mini Bolones de Maduro">
         <div class="card-body">
           <h3>Mini Bolones de Maduro</h3>
           <p>Crocantes por fuera y suaves por dentro, un bocado tradicional con sabor único.</p>
@@ -109,7 +128,6 @@
   </section>
 
   <!-- Sección Nuestra Historia -->
-  <section id="nuestra-historia" style="background-color: var(--fondo-claro);">
     <h2 style="text-align: center; margin-bottom: 2rem;">Nuestra Historia</h2>
     <div style="display: flex; align-items: center; gap: 3rem; max-width: 1000px; margin: 0 auto; flex-wrap: wrap;">
       <div style="flex: 1; min-width: 300px;">
@@ -118,7 +136,7 @@
         </p>
       </div>
       <div style="flex: 1; min-width: 300px; text-align: center;">
-        <img src="img/familia.png" alt="Nuestra Familia" style="width: 100%; max-width: 400px; height: auto; border-radius: 1rem; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
+  <img src="img/familia.png" alt="Nuestra Familia" style="width: 100%; max-width: 400px; height: auto; border-radius: 1rem; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
       </div>
     </div>
   </section>
@@ -140,11 +158,7 @@
         <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
           <button id="show-all-stores" 
                   style="background-color: var(--naranja-mostaza); color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 0.5rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease;">
-            <span>🏪</span> Todos los puntos
-          </button>
-          <button id="show-supermarkets" 
-                  style="background-color: var(--verde-oliva); color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 0.5rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease;">
-            <span>🛒</span> Supermercados
+            <span>🏪</span> Puntos de Venta
           </button>
         </div>
       </div>
@@ -152,15 +166,7 @@
       <!-- Mapa -->
       <div style="background: white; border-radius: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; max-width: 800px; margin: 0 auto 3rem;">
         <div id="stores-map" style="width: 100%; height: 400px; background: linear-gradient(135deg, #e3f2fd, #f0f8ff); display: flex; align-items: center; justify-content: center; flex-direction: column;">
-          <div style="text-align: center; padding: 2rem;">
-            <span style="font-size: 4rem; margin-bottom: 1rem; display: block;">🗺️</span>
-            <h3 style="color: var(--naranja-mostaza); margin-bottom: 1rem;">Mapa Interactivo</h3>
-            <p style="color: #666; margin-bottom: 1rem;">Próximamente: Ubicaciones en tiempo real</p>
-            <div style="background: white; border-radius: 0.5rem; padding: 1.5rem; margin-top: 1rem; border: 2px dashed var(--naranja-mostaza);">
-              <span style="font-size: 2rem;">📍</span>
-              <p style="margin-top: 0.5rem; color: var(--texto-principal); font-weight: 500;">Ecuador - Región Costa</p>
-            </div>
-          </div>
+          <div id="mapbox-puntos"></div>
         </div>
       </div>
 
@@ -170,11 +176,6 @@
           <span style="font-size: 3rem; color: #1976d2; margin-bottom: 1rem; display: block;">🏪</span>
           <h3 style="font-weight: 700; font-size: 1.2rem; margin-bottom: 0.5rem;">Puntos de Venta</h3>
           <p style="font-size: 0.9rem; color: #666;">Encuentra nuestros productos en tiendas locales y distribuidores cercanos</p>
-        </div>
-        <div style="text-align: center; padding: 2rem; background: #e8f5e8; border-radius: 1rem;">
-          <span style="font-size: 3rem; color: #388e3c; margin-bottom: 1rem; display: block;">🛒</span>
-          <h3 style="font-weight: 700; font-size: 1.2rem; margin-bottom: 0.5rem;">Supermercados</h3>
-          <p style="font-size: 0.9rem; color: #666;">Disponibles en las principales cadenas de supermercados del país</p>
         </div>
       </div>
 
@@ -264,6 +265,65 @@
       </div>
     </div>
   </footer>
+  <!-- Mapbox Init -->
+  <script>
+  mapboxgl.accessToken = 'pk.eyJ1IjoibGF0aWVycml0YXNob3AiLCJhIjoiY21laXJoOTFxMDU1YzJrcHpyYjdteWpuMSJ9.QuvDRg80cT7BFKzxdCc5fg';
+    // Solo declarar una vez la variable 'map'
+    var map = new mapboxgl.Map({
+      container: 'mapbox-puntos',
+      style: 'mapbox://styles/latierritashop/cmc9demp600e701s404vvdwde',
+      center: [-80.48, -1.02],
+      zoom: 7.8
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    map.addControl(new mapboxgl.FullscreenControl(), 'top-right');
+    var puntos = [
+      { ciudad: "Manta",        nombre: "Cevichería Umiña",             coordinates: [-80.739069, -0.946300], telefono: "0995561987" },
+      { ciudad: "Portoviejo",   nombre: "Plaza La Martina",             coordinates: [-80.481886, -1.032908], telefono: "0985756172" },
+      { ciudad: "Portoviejo",   nombre: "Los amigos",                   coordinates: [-80.458994, -1.048406], telefono: "0998522503" },
+      { ciudad: "Chone",        nombre: "Bollaca",                       coordinates: [-80.094937, -0.691777], telefono: "0994877799" },
+      { ciudad: "Samborondón",  nombre: "Ciudad Celeste - La Brisa",     coordinates: [-79.837624, -2.070011], telefono: "0984258459" }
+    ];
+    var bounds = new mapboxgl.LngLatBounds();
+    puntos.forEach(function(p) {
+      var el = document.createElement('div');
+      el.className = 'marker';
+      new mapboxgl.Marker({ element: el, anchor: 'center' })
+        .setLngLat(p.coordinates)
+        .setPopup(
+          new mapboxgl.Popup({ offset: 28 })
+            .setHTML(`
+              <div class="popup">
+                <h3>${p.nombre}</h3>
+                <p>${p.ciudad}</p>
+                <p>📞 <a href="tel:${p.telefono}">${p.telefono}</a></p>
+              </div>
+            `)
+        )
+        .addTo(map);
+      bounds.extend(p.coordinates);
+    });
+    map.once('load', function() {
+      if (!bounds.isEmpty()) {
+        map.fitBounds(bounds, { padding: 60, maxZoom: 14, duration: 800 });
+      }
+    });
+  </script>
+  <!-- Mapbox Init -->
+  <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoibGF0aWVycml0YXNob3AiLCJhIjoiY21jOWFzMHM4MXcyZjJtb3BuZzU0ZnVjdSJ9.uvBJT6wvbCSwc_ia4bSzUQ';
+    const map = new mapboxgl.Map({
+      container: 'mapbox-puntos',
+      style: 'mapbox://styles/latierritashop/cmc9demp600e701s404vvdwde',
+      center: [-79.9001, -2.1709], // Coordenadas de ejemplo (Guayaquil)
+      zoom: 10
+    });
+    // Ejemplo de marcador
+    new mapboxgl.Marker()
+      .setLngLat([-79.9001, -2.1709])
+      .setPopup(new mapboxgl.Popup().setText('Punto de Venta Ejemplo'))
+      .addTo(map);
+  </script>
 
 </body>
 </html>

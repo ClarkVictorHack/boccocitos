@@ -893,9 +893,3 @@ footer {
 .form-section:hover {
   box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
-
-.whatsapp-float::before {
-  content: "�";
-  font-size: 28px;
-  color: white;
-}
