@@ -13,20 +13,18 @@
 </head>
 <body>
 
-  <!-- Header y Navegación -->
+  <!-- Header y Navegación (canonical desde index.html) -->
   <header>
     <nav>
       <div class="logo">
         <img src="img/logotrazo.png" alt="BoccoCitos Logo" style="height: 40px; width: auto; margin-right: 10px; border-radius: 4px;">
-        BoccoCitos
       </div>
       <ul class="menu">
-        <li><a href="index.html">Inicio</a></li>
+        <li><a href="#inicio">Inicio</a></li>
         <li><a href="productos.html">Productos</a></li>
         <li><a href="nuestra-historia.html">Nuestra Historia</a></li>
-        <li><a href="index.html#puntos-venta">Puntos de Venta</a></li>
+        <li><a href="#puntos-venta">Puntos de Venta</a></li>
         <li><a href="formulario-distribuidores.html">Distribuidores</a></li>
-        <li><a href="index.html#contacto">Contacto</a></li>
       </ul>
     </nav>
   </header>
@@ -226,33 +224,100 @@
   <!-- Botón flotante de WhatsApp -->
   <a href="https://wa.me/593987843771" target="_blank" class="whatsapp-float" title="Contáctanos por WhatsApp"></a>
 
-  <!-- Footer -->
-  <footer>
-    <div style="max-width: 1200px; margin: 0 auto; padding: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; text-align: center;">
-      <div>
-        <h3 style="color: var(--naranja-mostaza); margin-bottom: 1rem;">BoccoCitos</h3>
-        <p style="font-weight: 500; line-height: 1.6;">
-          Sabores auténticos, tradición familiar y calidad natural en cada bocado. 
-          Descubre el verdadero gusto del campo ecuatoriano.
-        </p>
+  <!-- Carrito flotante (unificado) -->
+  <div id="carritoFloat" class="carrito-float" onclick="toggleCarrito()" style="position: fixed; top: 20px; right: 20px; z-index: 1000; background: var(--naranja-mostaza); color: white; padding: 0.75rem 1rem; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease;">
+    <i class="fas fa-shopping-cart" style="margin-right: 0.5rem;"></i>
+    <span id="carritoContador" style="background: white; color: var(--naranja-mostaza); border-radius: 50%; width: 25px; height: 25px; display: none; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem; margin-left: 0.5rem;">0</span>
+  </div>
+
+  <!-- Modal del carrito (canónico) -->
+  <div id="carritoModal" class="carrito-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000;">
+    <div class="carrito-contenido" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 1rem; max-width: 600px; width: 95%; max-height: 80vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 2px solid #f0f0f0; padding-bottom: 1rem;">
+        <h3 style="margin: 0; color: var(--naranja-mostaza);">Tu Carrito</h3>
+        <button onclick="toggleCarrito()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666;">&times;</button>
       </div>
-      <div>
-        <h3 style="color: var(--naranja-mostaza); margin-bottom: 1rem;">Enlaces</h3>
-        <ul style="list-style: none; line-height: 2;">
-          <li><a href="index.html" style="color: inherit; text-decoration: none;">Inicio</a></li>
-          <li><a href="productos.html" style="color: inherit; text-decoration: none;">Productos</a></li>
-          <li><a href="nuestra-historia.html" style="color: inherit; text-decoration: none;">Nuestra Historia</a></li>
-          <li><a href="index.html#puntos-venta" style="color: inherit; text-decoration: none;">Puntos de Venta</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3 style="color: var(--naranja-mostaza); margin-bottom: 1rem;">Contacto</h3>
-        <p>WhatsApp: +593 98 784 3771</p>
-        <p>Email: info@latierrita.com</p>
+      <div id="carritoItems"></div>
+      <div style="border-top: 2px solid #f0f0f0; padding-top: 1rem; margin-top: 1rem;">
+        <div id="carritoTotal" style="font-weight: bold; font-size: 1.2rem; text-align: right; margin-bottom: 1rem; color: var(--naranja-mostaza);">Total: $0.00</div>
+        <div id="paypal-button-container"></div>
+        <div id="mensaje-estado" style="display: none; padding: 1rem; border-radius: 0.5rem; margin-top: 1rem; text-align: center;"></div>
+        <div id="loader" style="display: none; text-align: center; padding: 1rem;">
+          <div style="border: 4px solid #f3f3f3; border-radius: 50%; border-top: 4px solid var(--naranja-mostaza); width: 40px; height: 40px; animation: spin 2s linear infinite; margin: 0 auto;"></div>
+        </div>
       </div>
     </div>
-    <div style="border-top: 1px solid var(--amarillo-suave); margin-top: 2rem; padding-top: 1rem; text-align: center;">
-      <p>&copy; 2025 BoccoCitos. Todos los derechos reservados.</p>
+  </div>
+
+  <!-- Footer (canonical desde index.html) -->
+  <footer style="background-color: #2d3748; color: white;">
+    <div style="max-width: 1200px; margin: 0 auto; padding: 3rem 2rem;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; text-align: left;">
+        <div>
+          <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: #f6d55c;">BoccoCitos</h3>
+          <p style="font-size: 1rem; color: #e2e8f0; line-height: 1.6; margin-bottom: 1rem;">
+            Sabores auténticos, tradición familiar y calidad natural en cada bocado.
+          </p>
+          <p style="font-size: 1rem; color: #e2e8f0; line-height: 1.6;">
+            Descubre el verdadero gusto del campo ecuatoriano con nuestros bocaditos artesanales, 
+            hechos con amor y dedicación para compartir en cada ocasión especial.
+          </p>
+        </div>
+        <div>
+          <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: #f6d55c;">Enlaces</h3>
+          <ul style="list-style: none; padding: 0; margin: 0;">
+            <li style="margin-bottom: 0.75rem;"><a href="#inicio" style="color: #e2e8f0; text-decoration: none; font-size: 1rem; transition: color 0.3s ease;" onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">Inicio</a></li>
+            <li style="margin-bottom: 0.75rem;"><a href="productos.html" style="color: #e2e8f0; text-decoration: none; font-size: 1rem; transition: color 0.3s ease;" onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">Productos</a></li>
+            <li style="margin-bottom: 0.75rem;"><a href="nuestra-historia.html" style="color: #e2e8f0; text-decoration: none; font-size: 1rem; transition: color 0.3s ease;" onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">Nosotros</a></li>
+            <li style="margin-bottom: 0.75rem;"><a href="#puntos-venta" style="color: #e2e8f0; text-decoration: none; font-size: 1rem; transition: color 0.3s ease;" onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">Puntos de Venta</a></li>
+            <li style="margin-bottom: 0.75rem;"><a href="formulario-distribuidores.html" style="color: #e2e8f0; text-decoration: none; font-size: 1rem; transition: color 0.3s ease;" onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">Distribuidores</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: #f6d55c;">Síguenos</h3>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/boccocitos" target="_blank" rel="noopener" title="Facebook" 
+               style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
+               onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
+               <i class="fab fa-facebook-f"></i>
+            </a>
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/boccocitos/" target="_blank" rel="noopener" title="Instagram" 
+               style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
+               onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
+               <i class="fab fa-instagram"></i>
+            </a>
+            <!-- WhatsApp -->
+            <a href="https://wa.me/593987843771" target="_blank" rel="noopener" title="WhatsApp" 
+               style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
+               onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
+               <i class="fab fa-whatsapp"></i>
+            </a>
+            <!-- LinkedIn -->
+            <a href="https://www.linkedin.com/company/boccocitos/?viewAsMember=true" target="_blank" rel="noopener" title="LinkedIn" 
+               style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
+               onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
+               <i class="fab fa-linkedin-in"></i>
+            </a>
+            <!-- X (Twitter) -->
+            <a href="https://x.com/boccocitos" target="_blank" rel="noopener" title="X" 
+               style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
+               onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
+               <i class="fab fa-x-twitter"></i>
+            </a>
+            <!-- TikTok -->
+            <a href="https://www.tiktok.com/@boccocitos" target="_blank" rel="noopener" title="TikTok" 
+               style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
+               onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
+               <i class="fab fa-tiktok"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div style="border-top: 1px solid #4a5568; margin-top: 2rem; padding-top: 1.5rem; text-align: center; font-size: 0.9rem;">
+        <p>&copy; 2025 BoccoCitos. Todos los derechos reservados.</p>
+      </div>
     </div>
   </footer>
 
@@ -271,7 +336,17 @@
         behavior: 'smooth'
       });
     });
+
+    // Small helper in case carrito.js is not loaded yet
+    function toggleCarrito() {
+      var modal = document.getElementById('carritoModal');
+      if (!modal) return;
+      modal.style.display = (modal.style.display === 'none' || modal.style.display === '') ? 'block' : 'none';
+    }
   </script>
+
+  <!-- Incluir script central del carrito -->
+  <script src="carrito.js"></script>
 
 </body>
 </html>

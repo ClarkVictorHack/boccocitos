@@ -30,20 +30,18 @@
 </head>
 <body>
 
-  <!-- Header y Navegación -->
+  <!-- Header y Navegación (canonical desde index.html) -->
   <header>
     <nav>
       <div class="logo">
         <img src="img/logotrazo.png" alt="BoccoCitos Logo" style="height: 40px; width: auto; margin-right: 10px; border-radius: 4px;">
-        BoccoCitos
       </div>
       <ul class="menu">
-        <li><a href="index.html">Inicio</a></li>
+        <li><a href="#inicio">Inicio</a></li>
         <li><a href="productos.html">Productos</a></li>
         <li><a href="nuestra-historia.html">Nuestra Historia</a></li>
         <li><a href="#puntos-venta">Puntos de Venta</a></li>
         <li><a href="formulario-distribuidores.html">Distribuidores</a></li>
-        <li><a href="#contacto">Contacto</a></li>
       </ul>
     </nav>
   </header>
@@ -104,7 +102,7 @@
 
         <!-- Precio -->
         <div style="background: var(--fondo-claro); padding: 1.5rem; border-radius: 0.75rem; margin-bottom: 2rem; border-left: 4px solid var(--verde-oliva);">
-          <span style="font-size: 2rem; font-weight: bold; color: var(--verde-oliva);">$2.75</span>
+          <span style="font-size: 2rem; font-weight: bold; color: var(--verde-oliva);">$3.50</span>
           <span style="color: #666; margin-left: 0.5rem;">por paquete</span>
         </div>
 
@@ -193,7 +191,7 @@
   <!-- Botón flotante de WhatsApp -->
   <a href="https://wa.me/593987843771" target="_blank" class="whatsapp-float" title="Contáctanos por WhatsApp"></a>
 
-  <!-- Footer -->
+  <!-- Footer (canonical desde index.html) -->
   <footer style="background-color: #2d3748; color: white;">
     <div style="max-width: 1200px; margin: 0 auto; padding: 3rem 2rem;">
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; text-align: left;">
@@ -210,10 +208,10 @@
         <div>
           <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: #f6d55c;">Enlaces</h3>
           <ul style="list-style: none; padding: 0; margin: 0;">
-            <li style="margin-bottom: 0.75rem;"><a href="index.html" style="color: #e2e8f0; text-decoration: none; font-size: 1rem; transition: color 0.3s ease;" onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">Inicio</a></li>
+            <li style="margin-bottom: 0.75rem;"><a href="#inicio" style="color: #e2e8f0; text-decoration: none; font-size: 1rem; transition: color 0.3s ease;" onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">Inicio</a></li>
             <li style="margin-bottom: 0.75rem;"><a href="productos.html" style="color: #e2e8f0; text-decoration: none; font-size: 1rem; transition: color 0.3s ease;" onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">Productos</a></li>
             <li style="margin-bottom: 0.75rem;"><a href="nuestra-historia.html" style="color: #e2e8f0; text-decoration: none; font-size: 1rem; transition: color 0.3s ease;" onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">Nosotros</a></li>
-            <li style="margin-bottom: 0.75rem;"><a href="index.html#puntos-venta" style="color: #e2e8f0; text-decoration: none; font-size: 1rem; transition: color 0.3s ease;" onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">Puntos de Venta</a></li>
+            <li style="margin-bottom: 0.75rem;"><a href="#puntos-venta" style="color: #e2e8f0; text-decoration: none; font-size: 1rem; transition: color 0.3s ease;" onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">Puntos de Venta</a></li>
             <li style="margin-bottom: 0.75rem;"><a href="formulario-distribuidores.html" style="color: #e2e8f0; text-decoration: none; font-size: 1rem; transition: color 0.3s ease;" onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">Distribuidores</a></li>
           </ul>
         </div>
@@ -265,91 +263,19 @@
     </div>
   </footer>
 
-  <!-- Scripts -->
+  <!-- Scripts locales del producto (cantidad) -->
   <script>
-    // Variables para el manejo del producto
     function cambiarCantidad(change) {
       const cantidadInput = document.getElementById('cantidadProducto');
       let nuevaCantidad = parseInt(cantidadInput.value) + change;
       if (nuevaCantidad < 1) nuevaCantidad = 1;
       cantidadInput.value = nuevaCantidad;
     }
-
-    // Función para agregar al carrito (se sobrescribe la cantidad)
-    function agregarAlCarrito(nombre, precio) {
-      const cantidad = parseInt(document.getElementById('cantidadProducto').value);
-      
-      // Crear objeto del producto
-      const producto = {
-        nombre: nombre,
-        precio: precio,
-        cantidad: cantidad
-      };
-      
-      // Obtener carrito actual
-      let carrito = JSON.parse(localStorage.getItem('carritoBoccoCitos')) || [];
-      
-      // Verificar si el producto ya existe
-      const productoExistente = carrito.find(item => item.nombre === nombre);
-      
-      if (productoExistente) {
-        productoExistente.cantidad += cantidad;
-      } else {
-        carrito.push(producto);
-      }
-      
-      // Guardar en localStorage
-      localStorage.setItem('carritoBoccoCitos', JSON.stringify(carrito));
-      
-      // Actualizar contador
-      actualizarContadorCarrito();
-      
-      // Mostrar mensaje
-      mostrarMensajeTemporal(`${nombre} agregado al carrito`);
-    }
-
-    // Función para actualizar contador del carrito
-    function actualizarContadorCarrito() {
-      const contador = document.getElementById('carritoContador');
-      const carrito = JSON.parse(localStorage.getItem('carritoBoccoCitos')) || [];
-      const totalItems = carrito.reduce((total, item) => total + item.cantidad, 0);
-      contador.textContent = totalItems;
-      contador.style.display = totalItems > 0 ? 'flex' : 'none';
-    }
-
-    // Función para mostrar mensaje temporal
-    function mostrarMensajeTemporal(mensaje) {
-      const mensajeElement = document.createElement('div');
-      mensajeElement.textContent = mensaje;
-      mensajeElement.style.cssText = `
-        position: fixed;
-        top: 80px;
-        right: 20px;
-        background: var(--verde-oliva);
-        color: white;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        z-index: 3000;
-        animation: slideIn 0.3s ease;
-      `;
-      
-      document.body.appendChild(mensajeElement);
-      
-      setTimeout(() => {
-        mensajeElement.remove();
-      }, 3000);
-    }
-
-    // Cargar contador al cargar la página
-    document.addEventListener('DOMContentLoaded', function() {
-      actualizarContadorCarrito();
-    });
   </script>
-  
-  <!-- Carrito JavaScript -->
-  <script src="carrito.js"></script>
 
-  <!-- PayPal SDK -->
+  <!-- Carrito centralizado -->
+  <script src="carrito.js"></script>
+  <!-- PayPal SDK (opcional, usado por carrito.js si está configurado) -->
   <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
 
 </body>
