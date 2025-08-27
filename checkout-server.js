@@ -319,9 +319,9 @@ async function sendOrderConfirmation(order) {
     }
 
     const mailOptions = {
-      from: `"La Tierrita" <${process.env.SMTP_USER}>`,
+      from: `"BoccoCitos" <${process.env.SMTP_USER}>`,
       to: order.customer.email,
-      subject: `Confirmación de Pedido #${order.orderNumber} - La Tierrita`,
+      subject: `Confirmación de Pedido #${order.orderNumber} - BoccoCitos`,
       html: generateOrderEmailHTML(order)
     };
 
@@ -347,12 +347,12 @@ function generateOrderEmailHTML(order) {
     <html>
     <head>
       <meta charset="UTF-8">
-      <title>Confirmación de Pedido - La Tierrita</title>
+      <title>Confirmación de Pedido - BoccoCitos</title>
     </head>
     <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
       <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
         <div style="text-align: center; margin-bottom: 30px;">
-          <h1 style="color: #f6d55c;">La Tierrita</h1>
+          <h1 style="color: #f6d55c;">BoccoCitos</h1>
           <p style="color: #666;">Bocaditos tradicionales del campo ecuatoriano</p>
         </div>
         
@@ -399,7 +399,7 @@ function generateOrderEmailHTML(order) {
         </div>
         
         <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; color: #666; font-size: 14px;">
-          <p>&copy; 2025 La Tierrita. Todos los derechos reservados.</p>
+          <p>&copy; 2025 BoccoCitos. Todos los derechos reservados.</p>
         </div>
       </div>
     </body>
@@ -477,7 +477,7 @@ app.use((req, res) => {
 loadExistingOrders();
 
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor de La Tierrita ejecutándose en puerto ${PORT}`);
+  console.log(`🚀 Servidor de BoccoCitos ejecutándose en puerto ${PORT}`);
   console.log(`📊 ${orders.length} pedidos cargados en la base de datos`);
   console.log(`🌐 Visita: http://localhost:${PORT}`);
 });

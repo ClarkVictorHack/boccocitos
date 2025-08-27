@@ -1,7 +1,7 @@
 {
-  "name": "la-tierrita-ecommerce",
+  "name": "boccocitos-ecommerce",
   "version": "1.0.0",
-  "description": "E-commerce completo para La Tierrita - Bocaditos tradicionales del campo ecuatoriano",
+  "description": "E-commerce completo para BoccoCitos - Bocaditos tradicionales del campo ecuatoriano",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -22,7 +22,7 @@
     "checkout",
     "shopping-cart"
   ],
-  "author": "La Tierrita",
+  "author": "BoccoCitos",
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.2",
@@ -42,10 +42,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tu-usuario/la-tierrita-ecommerce.git"
+    "url": "https://github.com/ClarkVictorHack/boccocitos.git"
   },
-  "homepage": "https://latierrita.com",
+  "homepage": "https://boccocitos.com",
   "bugs": {
-    "url": "https://github.com/tu-usuario/la-tierrita-ecommerce/issues"
+    "url": "https://github.com/ClarkVictorHack/boccocitos/issues"
   }
 }
