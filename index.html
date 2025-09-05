@@ -4,21 +4,13 @@
   <style>
     #google-maps-puntos { width: 100%; height: 400px; border-radius: 1rem; margin: 0 auto; min-height: 300px; border: none; }
     
-    /* Font-display optimizado para evitar layout shifts */
+    /* Font-display optimizado - solo fuente crítica */
     @font-face {
       font-family: 'Roboto';
       font-style: normal;
       font-weight: 400;
       font-display: swap;
       src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2) format('woff2');
-    }
-    
-    @font-face {
-      font-family: 'Merriweather';
-      font-style: normal;
-      font-weight: 400;
-      font-display: swap;
-      src: local('Merriweather'), url(https://fonts.gstatic.com/s/merriweather/v30/u-440qyriQwlOrhSvowK_l5-fCZM.woff2) format('woff2');
     }
     
     /* CSS Crítico para carga rápida */
@@ -152,7 +144,7 @@
     }
     
     .hero h1 {
-      font-family: 'Merriweather', serif;
+      font-family: Georgia, 'Times New Roman', serif;
       font-size: 3.5rem;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
       margin-bottom: 1rem;
@@ -186,32 +178,20 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>BoccoCitos | Sabor que te abraza</title>
   
-  <!-- Preconnect para mejorar rendimiento -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <!-- Preconnect optimizado - solo recursos críticos -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <link rel="preconnect" href="https://www.google.com">
-  <link rel="preconnect" href="https://www.googletagmanager.com">
-  <link rel="preconnect" href="https://tracker.metricool.com">
   
-  <!-- Preload de recursos críticos -->
+  <!-- Preload solo recursos críticos para LCP -->
   <link rel="preload" href="https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="https://fonts.gstatic.com/s/merriweather/v30/u-440qyriQwlOrhSvowK_l5-fCZM.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="img/logotrazo.png" as="image">
   <!-- Imagen LCP con alta prioridad -->
   <link rel="preload" href="img/pan de yuca.png" as="image" fetchpriority="high">
-  <link rel="preload" href="img/maria pipona de maduro.jpg" as="image">
-  <link rel="preload" href="img/mini bolon de maduro.png" as="image">
   
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="img/logotrazo.png">
   <link rel="shortcut icon" type="image/png" href="img/logotrazo.png">
   
-  <!-- CSS Crítico se carga de forma asíncrona después del crítico inline -->
-  <link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="style.css"></noscript>
-  
-  <!-- Fuentes ya están incluidas en CSS crítico con font-display: swap -->
+  <!-- CSS externo eliminado para reducir contenido no utilizado -->
 </head>
 <body>
 
@@ -254,6 +234,7 @@
         </div>
         <div class="card-body" style="padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
           <h3 style="margin: 0 0 1rem 0; font-size: 1.1rem;">Pan de Yuca</h3>
+          <p style="margin: 0 0 1rem 0; color: #666; font-size: 0.9rem;">Deliciosos panes de yuca tradicionales, sin gluten y listos en minutos. Perfectos para cualquier momento del día.</p>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
             <span style="font-size: 1.2rem; font-weight: bold; color: var(--verde-oliva);">$3.50</span>
             <a href="pan-de-yuca.html" class="btn-secondary" style="text-decoration: none; display: inline-block; min-width: 80px; text-align: center;">Ver más</a>
@@ -267,6 +248,7 @@
         </div>
         <div class="card-body" style="padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
           <h3 style="margin: 0 0 1rem 0; font-size: 1.1rem;">María Pipona de Maduro</h3>
+          <p style="margin: 0 0 1rem 0; color: #666; font-size: 0.9rem;">Exquisita combinación de plátano maduro con queso, envuelta en masa de yuca. Un sabor casero irresistible.</p>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
             <span style="font-size: 1.2rem; font-weight: bold; color: var(--verde-oliva);">$3.00</span>
             <a href="maria-pipona-maduro.html" class="btn-secondary" style="text-decoration: none; display: inline-block; min-width: 80px; text-align: center;">Ver más</a>
@@ -405,43 +387,43 @@
             <a href="https://www.facebook.com/boccocitos" target="_blank" rel="noopener" title="Facebook" 
                style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
                onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
-               <i class="fab fa-facebook-f"></i>
+               📘
             </a>
             <!-- Instagram -->
             <a href="https://www.instagram.com/boccocitos/" target="_blank" rel="noopener" title="Instagram" 
                style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
                onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
-               <i class="fab fa-instagram"></i>
+               📷
             </a>
             <!-- WhatsApp -->
             <a href="https://wa.me/593987843771" target="_blank" rel="noopener" title="WhatsApp" 
                style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
                onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
-               <i class="fab fa-whatsapp"></i>
+               💬
             </a>
             <!-- LinkedIn -->
             <a href="https://www.linkedin.com/company/boccocitos/?viewAsMember=true" target="_blank" rel="noopener" title="LinkedIn" 
                style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
                onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
-               <i class="fab fa-linkedin-in"></i>
+               💼
             </a>
             <!-- X (Twitter) -->
             <a href="https://x.com/boccocitos" target="_blank" rel="noopener" title="X" 
                style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
                onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
-               <i class="fab fa-x-twitter"></i>
+               🐦
             </a>
             <!-- TikTok -->
             <a href="https://www.tiktok.com/@boccocitos" target="_blank" rel="noopener" title="TikTok" 
                style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
                onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
-               <i class="fab fa-tiktok"></i>
+               🎵
             </a>
             <!-- YouTube -->
             <a href="https://www.youtube.com/@boccocitos" target="_blank" rel="noopener" title="YouTube" 
                style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
                onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
-               <i class="fab fa-youtube"></i>
+               📺
             </a>
           </div>
         </div>
@@ -454,134 +436,74 @@
   
   <!-- Scripts no críticos al final para mejor rendimiento -->
   
-  <!-- Google Analytics optimizado -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RPVLT6BMEB"></script>
+  <!-- Google Analytics optimizado con carga diferida -->
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-RPVLT6BMEB');
-  </script>
-  
-  <!-- Metricool Analytics optimizado -->
-  <script>
-    function loadScript(a){var b=document.getElementsByTagName("head")[0],c=document.createElement("script");c.type="text/javascript",c.src="https://tracker.metricool.com/resources/be.js",c.onreadystatechange=a,c.onload=a,b.appendChild(c)}loadScript(function(){beTracker.t({hash:"c50c70cd70f64617f45370cd0bf6868d"})});
-  </script>
-  
-  <!-- Font Awesome carga asíncrona -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-  
-  <!-- Google My Maps integrado - sin necesidad de JavaScript adicional -->
-  <script>
-    // Prevenir Cumulative Layout Shift (CLS) - Optimizado para reducir redistribución forzada
-    document.addEventListener('DOMContentLoaded', function() {
-      // Usar DocumentFragment para batching de operaciones DOM
-      const fragment = document.createDocumentFragment();
-      
-      // Optimización de imágenes lazy - evitar lecturas/escrituras DOM múltiples
-      const lazyImages = document.querySelectorAll('img[loading="lazy"]');
-      if (lazyImages.length > 0) {
-        // Usar requestAnimationFrame para operaciones DOM no críticas
-        requestAnimationFrame(() => {
-          lazyImages.forEach(img => {
-            if (!img.style.height && img.hasAttribute('height')) {
-              const height = img.getAttribute('height');
-              if (height) {
-                img.style.minHeight = height + 'px';
-              }
-            }
-          });
-        });
-      }
-    });
-    
-    // Optimizaciones de rendimiento - Diferir operaciones no críticas
+    // Cargar Google Analytics de forma diferida para no bloquear
     window.addEventListener('load', function() {
-      // Usar setTimeout para diferir operaciones no críticas y evitar bloqueos
-      setTimeout(() => {
-        console.log('Google My Maps cargado correctamente');
+      setTimeout(function() {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.googletagmanager.com/gtag/js?id=G-RPVLT6BMEB','gtag');
         
-        // Precargar imágenes con IntersectionObserver (más eficiente)
-        if ('IntersectionObserver' in window) {
-          const imageObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                const img = new Image();
-                img.src = entry.target.dataset.src;
-                imageObserver.unobserve(entry.target);
-              }
-            });
-          });
-          
-          // Configurar elementos a observar
-          const imagesToPreload = [
-            { src: 'img/familia.png' },
-            { src: 'img/planta.png' }
-          ];
-          
-          imagesToPreload.forEach(imgData => {
-            const div = document.createElement('div');
-            div.dataset.src = imgData.src;
-            imageObserver.observe(div);
-          });
-        }
-        
-        // Configurar localStorage de forma asíncrona
-        if (typeof(Storage) !== "undefined") {
-          const cacheVersion = 'v2';
-          const currentVersion = localStorage.getItem('boccocitos-cache-version');
-          
-          if (currentVersion !== cacheVersion) {
-            localStorage.clear();
-            localStorage.setItem('boccocitos-cache-version', cacheVersion);
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-RPVLT6BMEB');
+      }, 2000); // Cargar después de 2 segundos
+    });
+  </script>
+  
+  <!-- Metricool Analytics con carga diferida -->
+  <script>
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        var script = document.createElement('script');
+        script.src = 'https://tracker.metricool.com/resources/be.js';
+        script.onload = function() {
+          if (typeof beTracker !== 'undefined') {
+            beTracker.t({hash:"c50c70cd70f64617f45370cd0bf6868d"});
           }
-        }
-      }, 100);
+        };
+        document.head.appendChild(script);
+      }, 3000); // Cargar después de 3 segundos
+    });
+  </script>
+  
+  <!-- JavaScript mínimo optimizado para evitar tareas largas -->
+  <script>
+    // Optimización mínima para CLS - Solo lo esencial
+    document.addEventListener('DOMContentLoaded', function() {
+      // Fijar alturas de imágenes lazy de forma eficiente
+      requestAnimationFrame(() => {
+        const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+        lazyImages.forEach(img => {
+          const height = img.getAttribute('height');
+          if (height && !img.style.minHeight) {
+            img.style.minHeight = height + 'px';
+          }
+        });
+      });
     });
     
-    // Service Worker optimizado - registro asíncrono
-    if ('serviceWorker' in navigator && 'caches' in window) {
-      // Diferir registro del Service Worker para no bloquear
-      setTimeout(() => {
-        navigator.serviceWorker.register('/sw.js', {
-          scope: '/'
-        })
-        .then(function(registration) {
-          console.log('ServiceWorker registrado con éxito:', registration.scope);
-          
-          if (registration.waiting) {
-            registration.waiting.postMessage({command: 'skipWaiting'});
-          }
-        })
-        .catch(function(error) {
-          console.log('ServiceWorker falló al registrarse:', error);
-        });
-      }, 200);
+    // Service Worker minimalista - diferido al máximo
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        }, 5000); // Cargar después de 5 segundos
+      });
     }
     
-    // Interceptor de fetch optimizado - evitar sobrecarga
-    if ('fetch' in window) {
-      const originalFetch = window.fetch;
-      const cacheableExtensions = ['.png', '.jpg', '.jpeg', '.css', '.js', '.woff2'];
-      
-      window.fetch = function(...args) {
-        const [resource, options = {}] = args;
-        
-        // Verificación más eficiente de recursos cacheables
-        if (typeof resource === 'string') {
-          const isCacheable = cacheableExtensions.some(ext => resource.includes(ext));
-          
-          if (isCacheable && !options.headers) {
-            options.headers = {
-              'Cache-Control': 'public, max-age=31536000'
-            };
-          }
+    // Cache localStorage simple
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        if (typeof Storage !== "undefined") {
+          localStorage.setItem('boccocitos-v3', Date.now());
         }
-        
-        return originalFetch(resource, options);
-      };
-    }
+      }, 1000);
+    });
+  </script>
   </script>
 </body>
 </html>
