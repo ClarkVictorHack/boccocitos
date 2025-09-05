@@ -1,0 +1,218 @@
+<!-- Header Moderno y Minimalista para BoccoCitos -->
+<!-- Incluir esta sección en todas las páginas HTML -->
+
+<!-- CSS del Header Moderno -->
+<style>
+  /* Header moderno y minimalista */
+  header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(223, 191, 133, 0.2);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    contain: layout style;
+  }
+  
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    min-height: 70px;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--texto-principal);
+    text-decoration: none;
+    min-height: 40px;
+    min-width: 200px;
+    gap: 0.75rem;
+  }
+  
+  .logo img {
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+  }
+  
+  .logo:hover img {
+    transform: scale(1.05);
+  }
+  
+  .menu {
+    display: flex;
+    list-style: none;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    min-height: 40px;
+  }
+  
+  .menu li {
+    position: relative;
+  }
+  
+  .menu a {
+    color: var(--texto-principal);
+    text-decoration: none;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    position: relative;
+    display: block;
+  }
+  
+  .menu a:hover {
+    background-color: rgba(223, 191, 133, 0.1);
+    color: var(--naranja-mostaza);
+    transform: translateY(-1px);
+  }
+  
+  .menu a.active {
+    background-color: rgba(223, 191, 133, 0.15);
+    color: var(--naranja-mostaza);
+    font-weight: 600;
+  }
+  
+  /* Responsive hamburger menu */
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 0.5rem;
+    gap: 4px;
+  }
+  
+  .menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background-color: var(--texto-principal);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  
+  @media (max-width: 768px) {
+    nav {
+      padding: 1rem;
+    }
+    
+    .logo {
+      min-width: auto;
+    }
+    
+    .menu-toggle {
+      display: flex;
+    }
+    
+    .menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      flex-direction: column;
+      padding: 1rem;
+      border-top: 1px solid rgba(223, 191, 133, 0.2);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .menu.active {
+      display: flex;
+    }
+    
+    .menu a {
+      padding: 1rem;
+      text-align: center;
+      border-radius: 8px;
+      margin: 0.25rem 0;
+    }
+  }
+</style>
+
+<!-- HTML del Header Moderno -->
+<header>
+  <nav>
+    <a href="index.html" class="logo">
+      <img src="img/logotrazo.png" alt="BoccoCitos Logo" width="45" height="45">
+      <span>BoccoCitos</span>
+    </a>
+    
+    <ul class="menu" id="menu">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="productos.html">Productos</a></li>
+      <li><a href="nuestra-historia.html">Nuestra Historia</a></li>
+      <li><a href="index.html#puntos-venta">Puntos de Venta</a></li>
+      <li><a href="formulario-distribuidores.html">Distribuidores</a></li>
+    </ul>
+    
+    <div class="menu-toggle" id="menu-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+</header>
+
+<!-- JavaScript del menú móvil -->
+<script>
+  // Menú móvil moderno
+  document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('menu');
+    
+    if (menuToggle && menu) {
+      menuToggle.addEventListener('click', function() {
+        menu.classList.toggle('active');
+        
+        // Animación del hamburger
+        const spans = menuToggle.querySelectorAll('span');
+        if (menu.classList.contains('active')) {
+          spans[0].style.transform = 'rotate(45deg) translate(6px, 6px)';
+          spans[1].style.opacity = '0';
+          spans[2].style.transform = 'rotate(-45deg) translate(6px, -6px)';
+        } else {
+          spans[0].style.transform = '';
+          spans[1].style.opacity = '';
+          spans[2].style.transform = '';
+        }
+      });
+      
+      // Cerrar menú al hacer click en un enlace
+      const menuLinks = menu.querySelectorAll('a');
+      menuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          menu.classList.remove('active');
+          const spans = menuToggle.querySelectorAll('span');
+          spans[0].style.transform = '';
+          spans[1].style.opacity = '';
+          spans[2].style.transform = '';
+        });
+      });
+    }
+    
+    // Marcar página activa
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const menuLinks = document.querySelectorAll('.menu a');
+    
+    menuLinks.forEach(link => {
+      const linkPage = link.getAttribute('href').split('/').pop().split('#')[0];
+      if (linkPage === currentPage || (currentPage === '' && linkPage === 'index.html')) {
+        link.classList.add('active');
+      }
+    });
+  });
+</script>
