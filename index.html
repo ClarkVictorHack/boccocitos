@@ -4,6 +4,23 @@
   <style>
     #google-maps-puntos { width: 100%; height: 400px; border-radius: 1rem; margin: 0 auto; min-height: 300px; border: none; }
     
+    /* Font-display optimizado para evitar layout shifts */
+    @font-face {
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2) format('woff2');
+    }
+    
+    @font-face {
+      font-family: 'Merriweather';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: local('Merriweather'), url(https://fonts.gstatic.com/s/merriweather/v30/u-440qyriQwlOrhSvowK_l5-fCZM.woff2) format('woff2');
+    }
+    
     /* CSS Crítico para carga rápida */
     :root {
       --amarillo-pastel: #dfbf85;
@@ -14,19 +31,29 @@
       --fondo-claro: #ffffff;
     }
     
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+    }
     
     body {
       font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       color: var(--texto-principal);
       background-color: var(--fondo-claro);
       line-height: 1.6;
+      font-display: swap;
+      /* Optimizaciones para evitar redistribución forzada */
+      contain: layout style;
+      will-change: auto;
     }
     
     header {
       background-color: var(--amarillo-pastel);
       padding: 1rem 2rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      /* Contención para evitar redistribuciones */
+      contain: layout style;
     }
     
     nav {
@@ -35,13 +62,93 @@
       justify-content: space-between;
       max-width: 1200px;
       margin: 0 auto;
+      min-height: 60px;
     }
     
+    .menu {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+      min-height: 40px;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      min-height: 40px;
+      min-width: 200px;
+    }
+    
+    /* Prevenir layout shifts en imágenes */
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      /* Optimización para evitar redistribución en imágenes */
+      contain: layout;
+      will-change: auto;
+    }
+    
+    /* Optimizaciones específicas para elementos dinámicos */
+    .product-card {
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      contain: layout style;
+    }
+    
+    .product-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      /* Prevenir redistribución en imágenes de productos */
+      contain: size layout;
+    }
+    
+    /* Hero section optimizada */
     .hero {
+      contain: layout style;
+      will-change: auto;
       background: linear-gradient(135deg, var(--amarillo-suave), var(--naranja-mostaza));
       padding: 4rem 2rem;
       text-align: center;
       color: white;
+      min-height: 500px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    
+    /* Grid optimizado para productos */
+    .productos-grid {
+      contain: layout;
+    }
+    
+    /* Skeleton loading para prevenir CLS */
+    .image-placeholder {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+    }
+    
+    @keyframes loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    
+    /* Evitar layout shifts en botones */
+    .btn-primary, .btn-secondary {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
     }
     
     .hero h1 {
@@ -49,13 +156,19 @@
       font-size: 3.5rem;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
       margin-bottom: 1rem;
+      font-display: swap;
+      line-height: 1.2;
+      max-width: 800px;
+      width: 100%;
     }
     
     .hero p {
       font-size: 1.2rem;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
       max-width: 600px;
-      margin: 0 auto;
+      margin: 0 auto 2rem auto;
+      line-height: 1.6;
+      width: 100%;
     }
     
     .container {
@@ -82,8 +195,11 @@
   <link rel="preconnect" href="https://tracker.metricool.com">
   
   <!-- Preload de recursos críticos -->
+  <link rel="preload" href="https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://fonts.gstatic.com/s/merriweather/v30/u-440qyriQwlOrhSvowK_l5-fCZM.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="img/logotrazo.png" as="image">
-  <link rel="preload" href="img/pan de yuca.png" as="image">
+  <!-- Imagen LCP con alta prioridad -->
+  <link rel="preload" href="img/pan de yuca.png" as="image" fetchpriority="high">
   <link rel="preload" href="img/maria pipona de maduro.jpg" as="image">
   <link rel="preload" href="img/mini bolon de maduro.png" as="image">
   
@@ -95,9 +211,7 @@
   <link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="style.css"></noscript>
   
-  <!-- Google Fonts optimizado -->
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet"></noscript>
+  <!-- Fuentes ya están incluidas en CSS crítico con font-display: swap -->
 </head>
 <body>
 
@@ -119,11 +233,14 @@
 
   <!-- Sección Hero -->
   <section id="inicio" class="hero">
-    <h1>Sabor que te abraza</h1>
-    <p>Descubre el sabor auténtico y la tradición campesina en cada bocadito de BoccoCitos. Productos sin gluten, listos en minutos.</p>
-    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 2rem;">
-      <a href="productos.html" class="btn-primary" style="display: inline-block; text-decoration: none;">Conoce nuestros productos</a>
-      <a href="formulario-distribuidores.html" style="display: inline-block; text-decoration: none; background-color: var(--verde-oliva); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 500; transition: all 0.3s ease;">Ser Distribuidor</a>
+    <div class="container">
+      <h1>Sabor que te abraza</h1>
+      <p>Descubre el sabor auténtico y la tradición campesina en cada bocadito de BoccoCitos. Productos sin gluten, listos en minutos.</p>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 2rem; min-height: 60px;">
+        <a href="productos.html" class="btn-primary" style="display: inline-block; text-decoration: none; min-width: 200px; text-align: center;">Conoce nuestros productos</a>
+        <a href="formulario-distribuidores.html" style="display: inline-block; text-decoration: none; background-color: var(--verde-oliva); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 500; transition: all 0.3s ease; min-width: 150px; text-align: center;">Ser Distribuidor</a>
+      </div>
+    </div>
   </section>
 
   <!-- Sección Productos -->
@@ -131,36 +248,42 @@
     <h2 style="text-align: center; margin-bottom: 2rem;">Nuestros Productos Más Vendidos</h2>
     <div class="productos-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto;">
       <!-- Pan de Yuca -->
-      <div class="producto-card">
-  <img src="img/pan de yuca.png" alt="Pan de Yuca" loading="lazy" width="300" height="300">
-        <div class="card-body">
-          <h3>Pan de Yuca</h3>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+      <div class="producto-card" style="min-height: 400px; background: white; border-radius: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column;">
+        <div style="height: 200px; overflow: hidden; background-color: #f5f5f5;">
+          <img src="img/pan de yuca.png" alt="Pan de Yuca" loading="eager" fetchpriority="high" width="300" height="200" style="width: 100%; height: 200px; object-fit: cover;">
+        </div>
+        <div class="card-body" style="padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
+          <h3 style="margin: 0 0 1rem 0; font-size: 1.1rem;">Pan de Yuca</h3>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
             <span style="font-size: 1.2rem; font-weight: bold; color: var(--verde-oliva);">$3.50</span>
-            <a href="pan-de-yuca.html" class="btn-secondary" style="text-decoration: none; display: inline-block;">Ver más</a>
+            <a href="pan-de-yuca.html" class="btn-secondary" style="text-decoration: none; display: inline-block; min-width: 80px; text-align: center;">Ver más</a>
           </div>
         </div>
       </div>
       <!-- María Pipona de Maduro -->
-      <div class="producto-card">
-  <img src="img/maria pipona de maduro.jpg" alt="María Pipona de Maduro" loading="lazy" width="300" height="300">
-        <div class="card-body">
-          <h3>María Pipona de Maduro</h3>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+      <div class="producto-card" style="min-height: 400px; background: white; border-radius: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column;">
+        <div style="height: 200px; overflow: hidden; background-color: #f5f5f5;">
+          <img src="img/maria pipona de maduro.jpg" alt="María Pipona de Maduro" loading="lazy" width="300" height="200" style="width: 100%; height: 200px; object-fit: cover;">
+        </div>
+        <div class="card-body" style="padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
+          <h3 style="margin: 0 0 1rem 0; font-size: 1.1rem;">María Pipona de Maduro</h3>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
             <span style="font-size: 1.2rem; font-weight: bold; color: var(--verde-oliva);">$3.00</span>
-            <a href="maria-pipona-maduro.html" class="btn-secondary" style="text-decoration: none; display: inline-block;">Ver más</a>
+            <a href="maria-pipona-maduro.html" class="btn-secondary" style="text-decoration: none; display: inline-block; min-width: 80px; text-align: center;">Ver más</a>
           </div>
         </div>
       </div>
       <!-- Mini Bolones de Maduro -->
-      <div class="producto-card">
-  <img src="img/mini bolon de maduro.png" alt="Mini Bolones de Maduro" loading="lazy" width="300" height="300">
-        <div class="card-body">
-          <h3>Mini Bolones de Maduro</h3>
-          <p>Crocantes por fuera y suaves por dentro, un bocado tradicional con sabor único.</p>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+      <div class="producto-card" style="min-height: 400px; background: white; border-radius: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column;">
+        <div style="height: 200px; overflow: hidden; background-color: #f5f5f5;">
+          <img src="img/mini bolon de maduro.png" alt="Mini Bolones de Maduro" loading="lazy" width="300" height="200" style="width: 100%; height: 200px; object-fit: cover;">
+        </div>
+        <div class="card-body" style="padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
+          <h3 style="margin: 0 0 1rem 0; font-size: 1.1rem;">Mini Bolones de Maduro</h3>
+          <p style="margin: 0 0 1rem 0; color: #666; font-size: 0.9rem;">Crocantes por fuera y suaves por dentro, un bocado tradicional con sabor único.</p>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
             <span style="font-size: 1.2rem; font-weight: bold; color: var(--verde-oliva);">$3.50</span>
-            <a href="mini-bolones-maduro.html" class="btn-secondary" style="text-decoration: none; display: inline-block;">Ver más</a>
+            <a href="mini-bolones-maduro.html" class="btn-secondary" style="text-decoration: none; display: inline-block; min-width: 80px; text-align: center;">Ver más</a>
           </div>
         </div>
       </div>
@@ -176,15 +299,18 @@
   </section>
 
   <!-- Sección Nuestra Historia -->
+  <section style="padding: 4rem 2rem; background-color: #f8f9fa;">
     <h2 style="text-align: center; margin-bottom: 2rem;">Nuestra Historia</h2>
-    <div style="display: flex; align-items: center; gap: 3rem; max-width: 1000px; margin: 0 auto; flex-wrap: wrap;">
-      <div style="flex: 1; min-width: 300px;">
+    <div style="display: flex; align-items: center; gap: 3rem; max-width: 1000px; margin: 0 auto; flex-wrap: wrap; min-height: 400px;">
+      <div style="flex: 1; min-width: 300px; min-height: 200px;">
         <p style="text-align: justify; line-height: 1.7; font-size: 1.1rem;">
           Somos una familia que decidió volver a sus raíces en el campo, trabajando con amor y respeto por la tierra para ofrecerte bocaditos tradicionales, naturales y llenos de cariño.
         </p>
       </div>
-      <div style="flex: 1; min-width: 300px; text-align: center;">
-  <img src="img/familia.png" alt="Nuestra Familia" loading="lazy" width="400" height="300" style="width: 100%; max-width: 400px; height: auto; border-radius: 1rem; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
+      <div style="flex: 1; min-width: 300px; text-align: center; min-height: 300px; display: flex; align-items: center; justify-content: center;">
+        <div style="width: 100%; max-width: 400px; height: 300px; background-color: #f5f5f5; border-radius: 1rem; overflow: hidden;">
+          <img src="img/familia.png" alt="Nuestra Familia" loading="lazy" width="400" height="300" style="width: 100%; height: 300px; object-fit: cover; border-radius: 1rem; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
+        </div>
       </div>
     </div>
   </section>
@@ -348,27 +474,113 @@
   
   <!-- Google My Maps integrado - sin necesidad de JavaScript adicional -->
   <script>
-    // Optimizaciones de rendimiento
-    window.addEventListener('load', function() {
-      console.log('Google My Maps cargado correctamente');
+    // Prevenir Cumulative Layout Shift (CLS) - Optimizado para reducir redistribución forzada
+    document.addEventListener('DOMContentLoaded', function() {
+      // Usar DocumentFragment para batching de operaciones DOM
+      const fragment = document.createDocumentFragment();
       
-      // Precargar imágenes importantes de forma diferida
-      const imagesToPreload = [
-        'img/familia.png',
-        'img/planta.png'
-      ];
-      
-      imagesToPreload.forEach(src => {
-        const img = new Image();
-        img.src = src;
-      });
+      // Optimización de imágenes lazy - evitar lecturas/escrituras DOM múltiples
+      const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+      if (lazyImages.length > 0) {
+        // Usar requestAnimationFrame para operaciones DOM no críticas
+        requestAnimationFrame(() => {
+          lazyImages.forEach(img => {
+            if (!img.style.height && img.hasAttribute('height')) {
+              const height = img.getAttribute('height');
+              if (height) {
+                img.style.minHeight = height + 'px';
+              }
+            }
+          });
+        });
+      }
     });
     
-    // Optimización para dispositivos móviles
+    // Optimizaciones de rendimiento - Diferir operaciones no críticas
+    window.addEventListener('load', function() {
+      // Usar setTimeout para diferir operaciones no críticas y evitar bloqueos
+      setTimeout(() => {
+        console.log('Google My Maps cargado correctamente');
+        
+        // Precargar imágenes con IntersectionObserver (más eficiente)
+        if ('IntersectionObserver' in window) {
+          const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const img = new Image();
+                img.src = entry.target.dataset.src;
+                imageObserver.unobserve(entry.target);
+              }
+            });
+          });
+          
+          // Configurar elementos a observar
+          const imagesToPreload = [
+            { src: 'img/familia.png' },
+            { src: 'img/planta.png' }
+          ];
+          
+          imagesToPreload.forEach(imgData => {
+            const div = document.createElement('div');
+            div.dataset.src = imgData.src;
+            imageObserver.observe(div);
+          });
+        }
+        
+        // Configurar localStorage de forma asíncrona
+        if (typeof(Storage) !== "undefined") {
+          const cacheVersion = 'v2';
+          const currentVersion = localStorage.getItem('boccocitos-cache-version');
+          
+          if (currentVersion !== cacheVersion) {
+            localStorage.clear();
+            localStorage.setItem('boccocitos-cache-version', cacheVersion);
+          }
+        }
+      }, 100);
+    });
+    
+    // Service Worker optimizado - registro asíncrono
     if ('serviceWorker' in navigator && 'caches' in window) {
-      navigator.serviceWorker.register('/sw.js').catch(function(error) {
-        // Service worker no disponible, continúa normalmente
-      });
+      // Diferir registro del Service Worker para no bloquear
+      setTimeout(() => {
+        navigator.serviceWorker.register('/sw.js', {
+          scope: '/'
+        })
+        .then(function(registration) {
+          console.log('ServiceWorker registrado con éxito:', registration.scope);
+          
+          if (registration.waiting) {
+            registration.waiting.postMessage({command: 'skipWaiting'});
+          }
+        })
+        .catch(function(error) {
+          console.log('ServiceWorker falló al registrarse:', error);
+        });
+      }, 200);
+    }
+    
+    // Interceptor de fetch optimizado - evitar sobrecarga
+    if ('fetch' in window) {
+      const originalFetch = window.fetch;
+      const cacheableExtensions = ['.png', '.jpg', '.jpeg', '.css', '.js', '.woff2'];
+      
+      window.fetch = function(...args) {
+        const [resource, options = {}] = args;
+        
+        // Verificación más eficiente de recursos cacheables
+        if (typeof resource === 'string') {
+          const isCacheable = cacheableExtensions.some(ext => resource.includes(ext));
+          
+          if (isCacheable && !options.headers) {
+            options.headers = {
+              'Cache-Control': 'public, max-age=31536000'
+            };
+          }
+        }
+        
+        return originalFetch(resource, options);
+      };
     }
   </script>
 </body>

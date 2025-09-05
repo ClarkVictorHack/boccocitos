@@ -14,15 +14,17 @@
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
   color: var(--texto-principal);
   background-color: var(--fondo-claro);
   line-height: 1.6;
+  font-display: swap;
 }
 
 h1, h2, h3 {
-  font-family: 'Merriweather', serif;
+  font-family: 'Merriweather', Georgia, 'Times New Roman', serif;
   color: var(--texto-principal);
+  font-display: swap;
 }
 
 a {
