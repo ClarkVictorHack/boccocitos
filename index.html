@@ -1,659 +1,278 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <style>
-    #google-maps-puntos { width: 100%; height: 400px; border-radius: 1rem; margin: 0 auto; min-height: 300px; border: none; }
-    
-    /* Font-display optimizado - solo fuente crítica */
-    @font-face {
-      font-family: 'Roboto';
-      font-style: normal;
-      font-weight: 400;
-      font-display: swap;
-      src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2) format('woff2');
-    }
-    
-    /* CSS Crítico para carga rápida */
-    :root {
-      --amarillo-pastel: #dfbf85;
-      --amarillo-suave: #f2ce85;
-      --naranja-mostaza: #d79f49;
-      --verde-oliva: #aca060;
-      --texto-principal: #333333;
-      --fondo-claro: #ffffff;
-    }
-    
-    * { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0; 
-    }
-    
-    body {
-      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      color: var(--texto-principal);
-      background-color: var(--fondo-claro);
-      line-height: 1.6;
-      font-display: swap;
-      /* Optimizaciones para evitar redistribución forzada */
-      contain: layout style;
-      will-change: auto;
-    }
-    
-    header {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(223, 191, 133, 0.2);
-      padding: 0;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      /* Contención para evitar redistribuciones */
-      contain: layout style;
-    }
-    
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 1rem 2rem;
-      min-height: 70px;
-    }
-    
-    .logo {
-      display: flex;
-      align-items: center;
-      font-weight: 600;
-      font-size: 1.2rem;
-      color: var(--texto-principal);
-      text-decoration: none;
-      min-height: 40px;
-      min-width: 200px;
-      gap: 0.75rem;
-    }
-    
-    .logo img {
-      width: 45px;
-      height: 45px;
-      border-radius: 8px;
-      transition: transform 0.3s ease;
-    }
-    
-    .logo:hover img {
-      transform: scale(1.05);
-    }
-    
-    .menu {
-      display: flex;
-      list-style: none;
-      gap: 0;
-      margin: 0;
-      padding: 0;
-      align-items: center;
-      min-height: 40px;
-    }
-    
-    .menu li {
-      position: relative;
-    }
-    
-    .menu a {
-      color: var(--texto-principal);
-      text-decoration: none;
-      padding: 0.75rem 1.25rem;
-      border-radius: 8px;
-      font-weight: 500;
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
-      position: relative;
-      display: block;
-    }
-    
-    .menu a:hover {
-      background-color: rgba(223, 191, 133, 0.1);
-      color: var(--naranja-mostaza);
-      transform: translateY(-1px);
-    }
-    
-    .menu a.active {
-      background-color: rgba(223, 191, 133, 0.15);
-      color: var(--naranja-mostaza);
-      font-weight: 600;
-    }
-    
-    /* Responsive hamburger menu */
-    .menu-toggle {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-      padding: 0.5rem;
-      gap: 4px;
-    }
-    
-    .menu-toggle span {
-      width: 25px;
-      height: 3px;
-      background-color: var(--texto-principal);
-      border-radius: 2px;
-      transition: all 0.3s ease;
-    }
-    
-    @media (max-width: 768px) {
-      nav {
-        padding: 1rem;
-      }
-      
-      .logo {
-        min-width: auto;
-      }
-      
-      .menu-toggle {
-        display: flex;
-      }
-      
-      .menu {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: rgba(255, 255, 255, 0.98);
-        backdrop-filter: blur(10px);
-        flex-direction: column;
-        padding: 1rem;
-        border-top: 1px solid rgba(223, 191, 133, 0.2);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      }
-      
-      .menu.active {
-        display: flex;
-      }
-      
-      .menu a {
-        padding: 1rem;
-        text-align: center;
-        border-radius: 8px;
-        margin: 0.25rem 0;
-      }
-    }
-    
-    /* Prevenir layout shifts en imágenes */
-    img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      /* Optimización para evitar redistribución en imágenes */
-      contain: layout;
-      will-change: auto;
-    }
-    
-    /* Optimizaciones específicas para elementos dinámicos */
-    .product-card {
-      min-height: 400px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      contain: layout style;
-    }
-    
-    .product-card img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      /* Prevenir redistribución en imágenes de productos */
-      contain: size layout;
-    }
-    
-    /* Hero section optimizada */
-    .hero {
-      contain: layout style;
-      will-change: auto;
-      background: linear-gradient(rgba(242, 206, 133, 0.3), rgba(242, 206, 133, 0.3)), url('img/planta.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      padding: 4rem 2rem;
-      text-align: center;
-      color: white;
-      min-height: 500px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-    }
-    
-    /* Grid optimizado para productos */
-    .productos-grid {
-      contain: layout;
-    }
-    
-    /* Skeleton loading para prevenir CLS */
-    .image-placeholder {
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-      background-size: 200% 100%;
-      animation: loading 1.5s infinite;
-    }
-    
-    @keyframes loading {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-    
-    /* Evitar layout shifts en botones */
-    .btn-primary, .btn-secondary {
-      min-height: 44px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      white-space: nowrap;
-    }
-    
-    .hero h1 {
-      font-family: Georgia, 'Times New Roman', serif;
-      font-size: 3.5rem;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-      margin-bottom: 1rem;
-      font-display: swap;
-      line-height: 1.2;
-      max-width: 800px;
-      width: 100%;
-    }
-    
-    .hero p {
-      font-size: 1.2rem;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-      max-width: 600px;
-      margin: 0 auto 2rem auto;
-      line-height: 1.6;
-      width: 100%;
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
-  </style>
-  
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="BoccoCitos - Sabor auténtico que te abraza. Descubre nuestros deliciosos panes de yuca, bolones, muchines y más productos tradicionales ecuatorianos.">
-  <meta name="keywords" content="pan de yuca, bolones, muchines, comida ecuatoriana, BoccoCitos">
-  <meta name="author" content="BoccoCitos">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>BoccoCitos | Sabor que te abraza</title>
-  
-  <!-- Preconnect optimizado - solo recursos críticos -->
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://www.google.com">
-  
-  <!-- Preload solo recursos críticos para LCP -->
-  <link rel="preload" href="https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff2" as="font" type="font/woff2" crossorigin>
-  <!-- Imagen LCP con alta prioridad -->
-  <link rel="preload" href="img/pan de yuca.png" as="image" fetchpriority="high">
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="img/logotrazo.png">
-  <link rel="shortcut icon" type="image/png" href="img/logotrazo.png">
-  
-  <!-- CSS externo eliminado para reducir contenido no utilizado -->
-</head>
-<body>
-
-  <!-- Header y Navegación Moderna -->
-  <header>
-    <nav>
-      <a href="#inicio" class="logo">
-        <img src="img/logotrazo.png" alt="BoccoCitos Logo" width="45" height="45">
-        <span>BoccoCitos</span>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Boccocitos | Bocaditos y Snacks</title>
+    <meta name="description" content="Bocaditos tradicionales congelados, listos en minutos, hechos con ingredientes reales y producción propia en Ecuador.">
+    <link rel="preload" href="assets/brand/hero-platter.jpg" as="image">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="scroll-progress" aria-hidden="true"></div>
+      <a class="brand" href="#inicio" aria-label="Ir al inicio">
+        <span class="brand-mark">B</span>
+        <span>
+          <strong>BOCCOCITOS</strong>
+          <small>Bocaditos y Snacks</small>
+        </span>
       </a>
-      
-      <ul class="menu" id="menu">
-        <li><a href="#inicio" class="active">Inicio</a></li>
-        <li><a href="productos.html">Productos</a></li>
-        <li><a href="nuestra-historia.html">Nuestra Historia</a></li>
-        <li><a href="#puntos-venta">Puntos de Venta</a></li>
-        <li><a href="formulario-distribuidores.html">Distribuidores</a></li>
-      </ul>
-      
-      <div class="menu-toggle" id="menu-toggle">
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
         <span></span>
         <span></span>
         <span></span>
-      </div>
-    </nav>
-  </header>
+      </button>
 
-  <!-- Sección Hero -->
-  <section id="inicio" class="hero">
-    <div class="container">
-      <h1>Sabor que te abraza</h1>
-      <p>Descubre el sabor auténtico y la tradición campesina en cada bocadito de BoccoCitos. Productos sin gluten, listos en minutos.</p>
-      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 2rem; min-height: 60px;">
-        <a href="productos.html" class="btn-primary" style="display: inline-block; text-decoration: none; min-width: 200px; text-align: center;">Conoce nuestros productos</a>
-        <a href="formulario-distribuidores.html" style="display: inline-block; text-decoration: none; background-color: var(--verde-oliva); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 500; transition: all 0.3s ease; min-width: 150px; text-align: center;">Ser Distribuidor</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Sección Productos -->
-  <section id="productos">
-    <h2 style="text-align: center; margin-bottom: 2rem;">Nuestros Productos Más Vendidos</h2>
-    <div class="productos-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto;">
-      <!-- Pan de Yuca -->
-      <div class="producto-card" style="min-height: 400px; background: white; border-radius: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column;">
-        <div style="height: 200px; overflow: hidden; background-color: #f5f5f5;">
-          <img src="img/pan de yuca.png" alt="Pan de Yuca" loading="eager" fetchpriority="high" width="300" height="200" style="width: 100%; height: 200px; object-fit: cover;">
-        </div>
-        <div class="card-body" style="padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
-          <h3 style="margin: 0 0 1rem 0; font-size: 1.1rem;">Pan de Yuca</h3>
-          <p style="margin: 0 0 1rem 0; color: #666; font-size: 0.9rem;">Deliciosos panes de yuca tradicionales, sin gluten y listos en minutos. Perfectos para cualquier momento del día.</p>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
-            <span style="font-size: 1.2rem; font-weight: bold; color: var(--verde-oliva);">$3.50</span>
-            <a href="pan-de-yuca.html" class="btn-secondary" style="text-decoration: none; display: inline-block; min-width: 80px; text-align: center;">Ver más</a>
-          </div>
-        </div>
-      </div>
-      <!-- María Pipona de Maduro -->
-      <div class="producto-card" style="min-height: 400px; background: white; border-radius: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column;">
-        <div style="height: 200px; overflow: hidden; background-color: #f5f5f5;">
-          <img src="img/maria pipona de maduro.jpg" alt="María Pipona de Maduro" loading="lazy" width="300" height="200" style="width: 100%; height: 200px; object-fit: cover;">
-        </div>
-        <div class="card-body" style="padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
-          <h3 style="margin: 0 0 1rem 0; font-size: 1.1rem;">María Pipona de Maduro</h3>
-          <p style="margin: 0 0 1rem 0; color: #666; font-size: 0.9rem;">Exquisita combinación de plátano maduro con queso, envuelta en masa de yuca. Un sabor casero irresistible.</p>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
-            <span style="font-size: 1.2rem; font-weight: bold; color: var(--verde-oliva);">$3.00</span>
-            <a href="maria-pipona-maduro.html" class="btn-secondary" style="text-decoration: none; display: inline-block; min-width: 80px; text-align: center;">Ver más</a>
-          </div>
-        </div>
-      </div>
-      <!-- Mini Bolones de Maduro -->
-      <div class="producto-card" style="min-height: 400px; background: white; border-radius: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; display: flex; flex-direction: column;">
-        <div style="height: 200px; overflow: hidden; background-color: #f5f5f5;">
-          <img src="img/mini bolon de maduro.png" alt="Mini Bolones de Maduro" loading="lazy" width="300" height="200" style="width: 100%; height: 200px; object-fit: cover;">
-        </div>
-        <div class="card-body" style="padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
-          <h3 style="margin: 0 0 1rem 0; font-size: 1.1rem;">Mini Bolones de Maduro</h3>
-          <p style="margin: 0 0 1rem 0; color: #666; font-size: 0.9rem;">Crocantes por fuera y suaves por dentro, un bocado tradicional con sabor único.</p>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
-            <span style="font-size: 1.2rem; font-weight: bold; color: var(--verde-oliva);">$3.50</span>
-            <a href="mini-bolones-maduro.html" class="btn-secondary" style="text-decoration: none; display: inline-block; min-width: 80px; text-align: center;">Ver más</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Botón para ver todos los productos -->
-    <div style="text-align: center; margin-top: 3rem;">
-      <a href="productos.html" 
-         style="background-color: var(--naranja-mostaza); color: white; font-weight: 700; padding: 1rem 2rem; border-radius: 0.5rem; text-decoration: none; display: inline-block; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.15); font-size: 1.1rem;">
-        Ver Todos Nuestros Productos
-      </a>
-    </div>
-  </section>
-
-  <!-- Sección Nuestra Historia -->
-  <section style="padding: 4rem 2rem; background-color: #f8f9fa;">
-    <h2 style="text-align: center; margin-bottom: 2rem;">Nuestra Historia</h2>
-    <div style="display: flex; align-items: center; gap: 3rem; max-width: 1000px; margin: 0 auto; flex-wrap: wrap; min-height: 400px;">
-      <div style="flex: 1; min-width: 300px; min-height: 200px;">
-        <p style="text-align: justify; line-height: 1.7; font-size: 1.1rem;">
-          Somos una familia que decidió volver a sus raíces en el campo, trabajando con amor y respeto por la tierra para ofrecerte bocaditos tradicionales, naturales y llenos de cariño.
-        </p>
-      </div>
-      <div style="flex: 1; min-width: 300px; text-align: center; min-height: 300px; display: flex; align-items: center; justify-content: center;">
-        <div style="width: 100%; max-width: 400px; height: 300px; background-color: #f5f5f5; border-radius: 1rem; overflow: hidden;">
-          <img src="img/familia.png" alt="Nuestra Familia" loading="lazy" width="400" height="300" style="width: 100%; height: 300px; object-fit: cover; border-radius: 1rem; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Sección Puntos de Venta -->
-  <section id="puntos-venta" style="background-color: var(--fondo-claro); padding: 4rem 2rem;">
-    <div style="max-width: 1200px; margin: 0 auto;">
-      <div style="text-align: center; margin-bottom: 3rem;">
-        <h2 style="margin-bottom: 1rem; color: var(--naranja-mostaza); font-size: 2.5rem;">Encuentra Nuestros Productos</h2>
-        <p style="color: #666; margin-bottom: 2rem; font-size: 1.1rem;">
-          Descubre dónde puedes encontrar los auténticos bocaditos de BoccoCitos. 
-          Nuestros productos están disponibles en puntos de venta y supermercados seleccionados para garantizar 
-          la mejor calidad y frescura.
-        </p>
-      </div>
-
-      <!-- Controles del mapa -->
-      <div style="margin-bottom: 2rem;">
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
-          <button id="show-all-stores" 
-                  style="background-color: var(--naranja-mostaza); color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 0.5rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease;">
-            <span>🏪</span> Puntos de Venta y Supermercados
+      <nav id="site-nav" class="site-nav" aria-label="Navegación principal">
+        <a href="#inicio" class="active">Inicio</a>
+        <a href="#semana">Esta semana</a>
+        <div class="nav-product">
+          <button class="product-trigger" type="button" aria-expanded="false">
+            Productos
+            <span aria-hidden="true">⌄</span>
           </button>
+          <div class="mega-menu" aria-label="Menú de productos">
+            <div class="menu-feature">
+              <img src="assets/brand/portfolio.jpg" alt="Portafolio Boccocitos">
+              <div>
+                <p>Portafolio 2026</p>
+                <strong>Congelados listos para crecer contigo.</strong>
+                <a href="#productos">Ver todos los productos</a>
+              </div>
+            </div>
+            <div class="menu-column">
+              <p>Tradicionales</p>
+              <a href="#producto-mini-bolones-maduro"><img src="assets/products/mini-bolones-maduro.jpg" alt="">Mini bolones de maduro</a>
+              <a href="#producto-mini-bolones-verde"><img src="assets/products/mini-bolones-verde.jpg" alt="">Mini bolones de verde</a>
+              <a href="#producto-pan-yuca"><img src="assets/products/pan-yuca.jpg" alt="">Pan de yuca</a>
+              <a href="#producto-mini-muchines-yuca"><img src="assets/products/mini-muchines-yuca.jpg" alt="">Mini muchines de yuca</a>
+            </div>
+            <div class="menu-column">
+              <p>Gourmet</p>
+              <a href="#producto-maria-pipona-verde"><img src="assets/products/maria-pipona-verde.jpg" alt="">María Pipona de verde</a>
+              <a href="#producto-maria-pipona-maduro"><img src="assets/products/maria-pipona-maduro.jpg" alt="">María Pipona de maduro</a>
+              <a href="#producto-muchin-yuca"><img src="assets/products/muchin-yuca.jpg" alt="">Muchín de yuca</a>
+            </div>
+            <div class="menu-column">
+              <p>Foodservice</p>
+              <a href="#producto-boccocitos-verde"><img src="assets/products/boccocitos-verde.jpg" alt="">Boccocitos de verde</a>
+              <a href="#producto-boccocitos-maduro"><img src="assets/products/boccocitos-maduro.jpg" alt="">Boccocitos de maduro</a>
+              <a href="#producto-boccocitos-yuca"><img src="assets/products/boccocitos-yuca.jpg" alt="">Boccocitos de yuca</a>
+            </div>
+          </div>
         </div>
-      </div>
+        <a href="#historia">¿Quiénes somos?</a>
+        <a href="#calidad">Calidad</a>
+        <a href="#canales">Canales</a>
+        <a href="#contacto">Contáctanos</a>
+      </nav>
 
-      <!-- Mapa -->
-      <div style="background: white; border-radius: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; max-width: 800px; margin: 0 auto 3rem;">
-        <div id="stores-map" style="width: 100%; height: 400px; background: linear-gradient(135deg, #e3f2fd, #f0f8ff); display: flex; align-items: center; justify-content: center; flex-direction: column;">
-          <iframe id="google-maps-puntos" 
-                  src="https://www.google.com/maps/d/u/0/embed?mid=1AgiK4EHdw7HSgRgO3pHlc9OKWZ_30Bc&ehbc=2E312F" 
-                  width="100%" 
-                  height="400" 
-                  loading="lazy"
-                  style="border-radius: 1rem; border: none;">
-          </iframe>
-        </div>
-      </div>
+      <a class="sell-cta" href="#contacto">
+        <span>Quiero vender</span>
+      </a>
+    </header>
 
-      <!-- Información adicional -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 800px; margin: 0 auto 3rem;">
-        <div style="text-align: center; padding: 2rem; background: #e3f2fd; border-radius: 1rem;">
-          <span style="font-size: 3rem; color: #1976d2; margin-bottom: 1rem; display: block;">🏪</span>
-          <h3 style="font-weight: 700; font-size: 1.2rem; margin-bottom: 0.5rem;">Puntos de Venta y Supermercados</h3>
-          <p style="font-size: 0.9rem; color: #666;">Encuentra nuestros productos en tiendas locales, supermercados y distribuidores cercanos</p>
-        </div>
-      </div>
-
-      <!-- Call to action -->
-      <div style="text-align: center;">
-        <h3 style="font-size: 1.8rem; font-weight: 700; color: var(--naranja-mostaza); margin-bottom: 1rem;">¿Quieres ser punto de venta?</h3>
-        <p style="color: #666; margin-bottom: 2rem; font-size: 1.1rem;">Únete a nuestra red de distribuidores y lleva el sabor tradicional a tu comunidad</p>
-        <a href="formulario-distribuidores.html" 
-           style="background-color: var(--naranja-mostaza); color: white; font-weight: 700; padding: 1rem 2rem; border-radius: 0.5rem; text-decoration: none; display: inline-block; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-          Ser Distribuidor
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Botón flotante de WhatsApp -->
-  <a href="https://wa.me/593987843771" target="_blank" class="whatsapp-float" title="Contáctanos por WhatsApp"></a>
-
-  <!-- Footer -->
-  <footer style="background-color: #2d3748; color: white;">
-    <div style="max-width: 1200px; margin: 0 auto; padding: 3rem 2rem;">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; text-align: left;">
-        <div>
-          <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: #f6d55c;">BoccoCitos</h3>
-          <p style="font-size: 1rem; color: #e2e8f0; line-height: 1.6; margin-bottom: 1rem;">
-            Sabores auténticos, tradición familiar y calidad natural en cada bocado.
-          </p>
-          <p style="font-size: 1rem; color: #e2e8f0; line-height: 1.6;">
-            Descubre el verdadero gusto del campo ecuatoriano con nuestros bocaditos artesanales, 
-            hechos con amor y dedicación para compartir en cada ocasión especial.
-          </p>
-        </div>
-        <div>
-          <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: #f6d55c;">Enlaces</h3>
-          <ul style="list-style: none; padding: 0; margin: 0;">
-            <li style="margin-bottom: 0.75rem;"><a href="#inicio" style="color: #e2e8f0; text-decoration: none; font-size: 1rem; transition: color 0.3s ease;" onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">Inicio</a></li>
-            <li style="margin-bottom: 0.75rem;"><a href="productos.html" style="color: #e2e8f0; text-decoration: none; font-size: 1rem; transition: color 0.3s ease;" onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">Productos</a></li>
-            <li style="margin-bottom: 0.75rem;"><a href="nuestra-historia.html" style="color: #e2e8f0; text-decoration: none; font-size: 1rem; transition: color 0.3s ease;" onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">Nosotros</a></li>
-            <li style="margin-bottom: 0.75rem;"><a href="#puntos-venta" style="color: #e2e8f0; text-decoration: none; font-size: 1rem; transition: color 0.3s ease;" onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">Puntos de Venta</a></li>
-            <li style="margin-bottom: 0.75rem;"><a href="formulario-distribuidores.html" style="color: #e2e8f0; text-decoration: none; font-size: 1rem; transition: color 0.3s ease;" onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">Distribuidores</a></li>
+    <main>
+      <section id="inicio" class="hero">
+        <img src="assets/brand/hero-platter.jpg" alt="Bocaditos Boccocitos sobre una bandeja de madera" class="hero-media">
+        <div class="hero-grain"></div>
+        <div class="hero-shade"></div>
+        <div class="hero-content">
+          <p class="eyebrow">Hecho en Ecuador</p>
+          <h1>¡Sabor que te abraza!</h1>
+          <p>Bocaditos tradicionales congelados, listos en minutos, hechos con ingredientes reales y producción propia.</p>
+          <div class="hero-actions">
+            <a href="#productos" class="btn primary">Ver productos</a>
+            <a href="#contacto" class="btn ghost">Quiero vender Boccocitos</a>
+          </div>
+          <ul class="hero-badges" aria-label="Diferenciales">
+            <li>Sin gluten</li>
+            <li>Ingredientes reales</li>
+            <li>Productos congelados</li>
+            <li>Producción propia</li>
           </ul>
         </div>
-        <div>
-          <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; color: #f6d55c;">Síguenos</h3>
-          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-            <!-- Facebook -->
-            <a href="https://www.facebook.com/boccocitos" target="_blank" rel="noopener" title="Facebook" 
-               style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
-               onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
-               📘
-            </a>
-            <!-- Instagram -->
-            <a href="https://www.instagram.com/boccocitos/" target="_blank" rel="noopener" title="Instagram" 
-               style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
-               onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
-               📷
-            </a>
-            <!-- WhatsApp -->
-            <a href="https://wa.me/593987843771" target="_blank" rel="noopener" title="WhatsApp" 
-               style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
-               onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
-               💬
-            </a>
-            <!-- LinkedIn -->
-            <a href="https://www.linkedin.com/company/boccocitos/?viewAsMember=true" target="_blank" rel="noopener" title="LinkedIn" 
-               style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
-               onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
-               💼
-            </a>
-            <!-- X (Twitter) -->
-            <a href="https://x.com/boccocitos" target="_blank" rel="noopener" title="X" 
-               style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
-               onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
-               🐦
-            </a>
-            <!-- TikTok -->
-            <a href="https://www.tiktok.com/@boccocitos" target="_blank" rel="noopener" title="TikTok" 
-               style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
-               onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
-               🎵
-            </a>
-            <!-- YouTube -->
-            <a href="https://www.youtube.com/@boccocitos" target="_blank" rel="noopener" title="YouTube" 
-               style="color: #e2e8f0; font-size: 1.8rem; transition: color 0.3s ease; display: inline-block;" 
-               onmouseover="this.style.color='#f6d55c'" onmouseout="this.style.color='#e2e8f0'">
-               📺
-            </a>
-          </div>
+        <aside class="hero-proof" aria-label="Datos clave Boccocitos">
+          <span>10</span>
+          <p>productos para retail, gourmet y foodservice</p>
+        </aside>
+      </section>
+
+      <section id="semana" class="weekly-section reveal-group">
+        <div class="weekly-heading reveal">
+          <p class="eyebrow dark" id="week-range">Productos destacados</p>
+          <h2>Los protagonistas para servir esta semana</h2>
+          <span>Una selección dinámica para descubrir líneas, preparaciones y formatos sin perder el ritmo.</span>
         </div>
-      </div>
-      <div style="border-top: 1px solid #4a5568; margin-top: 2rem; padding-top: 1.5rem; text-align: center; font-size: 0.9rem;">
-        <p>&copy; 2025 BoccoCitos. Todos los derechos reservados.</p>
-      </div>
+
+        <div class="weekly-controls" aria-label="Filtrar destacados">
+          <button class="weekly-filter active" type="button" data-week-filter="all">Todos</button>
+          <button class="weekly-filter" type="button" data-week-filter="tradicionales">Tradicionales</button>
+          <button class="weekly-filter" type="button" data-week-filter="gourmet">Gourmet</button>
+          <button class="weekly-filter" type="button" data-week-filter="foodservice">Foodservice</button>
+        </div>
+
+        <div class="weekly-stage">
+          <article class="weekly-feature" id="weekly-feature" aria-live="polite"></article>
+          <div class="weekly-grid" id="weekly-grid"></div>
+        </div>
+      </section>
+
+      <section class="product-strip reveal" aria-label="Productos destacados">
+        <button class="strip-arrow" type="button" data-strip="left" aria-label="Ver productos anteriores">‹</button>
+        <div class="strip-track">
+          <a href="#producto-mini-bolones-maduro"><img src="assets/products/mini-bolones-maduro.jpg" alt="">Mini bolones de maduro</a>
+          <a href="#producto-mini-bolones-verde"><img src="assets/products/mini-bolones-verde.jpg" alt="">Mini bolones de verde</a>
+          <a href="#producto-pan-yuca"><img src="assets/products/pan-yuca.jpg" alt="">Pan de yuca</a>
+          <a href="#producto-mini-muchines-yuca"><img src="assets/products/mini-muchines-yuca.jpg" alt="">Mini muchines de yuca</a>
+          <a href="#producto-maria-pipona-verde"><img src="assets/products/maria-pipona-verde.jpg" alt="">María Pipona de verde</a>
+          <a href="#producto-boccocitos-verde"><img src="assets/products/boccocitos-verde.jpg" alt="">Boccocitos de verde</a>
+          <a href="#producto-boccocitos-maduro"><img src="assets/products/boccocitos-maduro.jpg" alt="">Boccocitos de maduro</a>
+          <a href="#producto-boccocitos-yuca"><img src="assets/products/boccocitos-yuca.jpg" alt="">Boccocitos de yuca</a>
+        </div>
+        <button class="strip-arrow" type="button" data-strip="right" aria-label="Ver más productos">›</button>
+      </section>
+
+      <section id="calidad" class="features reveal-group">
+        <article>
+          <span>⌂</span>
+          <h2>De la finca a tu mesa</h2>
+          <p>Cultivamos el 80% de nuestra materia prima en fincas propias, asegurando frescura y control.</p>
+        </article>
+        <article>
+          <span>⚙</span>
+          <h2>Calidad industrial</h2>
+          <p>Tecnología de punta y altos estándares de inocuidad 0029-BPM-AN-0326.</p>
+        </article>
+        <article>
+          <span>◷</span>
+          <h2>Listos en minutos</h2>
+          <p>Prepáralos como quieras: airfryer, horno, sartén, freidora o microondas.</p>
+        </article>
+        <article>
+          <span>☘</span>
+          <h2>Recetas auténticas</h2>
+          <p>Sabores tradicionales adaptados al consumo moderno y a distintos canales.</p>
+        </article>
+      </section>
+
+      <section id="productos" class="products-section reveal-group">
+        <div class="section-heading reveal">
+          <p>Nuestros productos</p>
+          <h2>Tradición que te hace la vida más fácil</h2>
+          <span>10 productos diseñados para retail, foodservice, restaurantes y distribución.</span>
+        </div>
+
+        <div class="category-cards">
+          <article>
+            <img src="assets/products/boccocitos-verde.jpg" alt="Boccocitos de verde">
+            <strong>Boccocitos / Bites</strong>
+            <p>Soluciones prácticas y versátiles para cocinas profesionales.</p>
+            <a href="#productos" data-filter-link="foodservice">Ver línea</a>
+          </article>
+          <article>
+            <img src="assets/products/mini-bolones-maduro.jpg" alt="Mini bolones de maduro">
+            <strong>Tradicionales</strong>
+            <p>Los clásicos que nunca fallan, ahora listos en minutos.</p>
+            <a href="#productos" data-filter-link="tradicionales">Ver línea</a>
+          </article>
+          <article>
+            <img src="assets/products/maria-pipona-verde.jpg" alt="María Pipona de verde">
+            <strong>Gourmet</strong>
+            <p>Opciones premium con ingredientes seleccionados.</p>
+            <a href="#productos" data-filter-link="gourmet">Ver línea</a>
+          </article>
+        </div>
+
+        <div class="product-toolbar" aria-label="Filtrar productos">
+          <button class="filter active" type="button" data-filter="all">Todos</button>
+          <button class="filter" type="button" data-filter="tradicionales">Tradicionales</button>
+          <button class="filter" type="button" data-filter="gourmet">Gourmet</button>
+          <button class="filter" type="button" data-filter="foodservice">Foodservice</button>
+        </div>
+
+        <div class="product-grid" id="product-grid"></div>
+      </section>
+
+      <section id="historia" class="story-band reveal-group">
+        <article class="story-card reveal">
+          <div>
+            <p>Nuestra historia</p>
+            <h2>Empresa familiar ecuatoriana con estándares industriales modernos</h2>
+            <span>Conectamos tradición, calidad y conveniencia con procesos sostenibles y producción propia.</span>
+            <a class="btn light" href="#proceso">Conócenos más</a>
+          </div>
+          <img src="assets/brand/family-products.jpg" alt="Familia Boccocitos con productos">
+        </article>
+        <article class="partner-card reveal">
+          <div>
+            <p>¿Crecemos contigo?</p>
+            <h2>Productos listos para retail, food service y canales institucionales.</h2>
+            <a class="btn primary" href="#contacto">Quiero vender Boccocitos</a>
+          </div>
+        </article>
+      </section>
+
+      <section id="proceso" class="process-section reveal-group">
+        <img src="assets/brand/process.jpg" alt="Proceso de cosecha, procesamiento y distribución">
+        <div>
+          <p class="eyebrow dark">Proceso integrado</p>
+          <h2>De la finca al producto final, sin intermediarios.</h2>
+          <ol>
+            <li><strong>Cosecha y selección</strong> de materia prima en fincas propias.</li>
+            <li><strong>Procesamiento</strong> con tecnología, inocuidad y control de calidad.</li>
+            <li><strong>Distribución</strong> para supermercados, restaurantes y mayoristas.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="canales" class="channels reveal-group">
+        <div class="section-heading compact reveal">
+          <p>Canales y formatos</p>
+          <h2>Para llevar Boccocitos a todos</h2>
+        </div>
+        <div class="channel-grid">
+          <article>
+            <h3>Retail</h3>
+            <p>Presentaciones familiares de 400 g y 500 g para supermercados y tiendas especializadas.</p>
+          </article>
+          <article>
+            <h3>Foodservice</h3>
+            <p>Formatos de 2 kg y cajas de 10 kg para restaurantes, hoteles y cafeterías.</p>
+          </article>
+          <article>
+            <h3>Distribución</h3>
+            <p>Capacidad de producción de 5 a 10 TM/mes según línea, para mercado nacional e internacional.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="contacto" class="contact-section reveal">
+        <div>
+          <p class="eyebrow dark">Contáctanos</p>
+          <h2>¿Tienes preguntas?</h2>
+          <p>Estamos listos para ayudarte a sumar bocaditos ecuatorianos a tu canal.</p>
+        </div>
+        <address>
+          <a href="tel:+593968441659">+593 96 844 1659</a>
+          <a href="mailto:ventas@boccocitos.com">ventas@boccocitos.com</a>
+          <a href="https://www.boccocitos.com">www.boccocitos.com</a>
+          <span>Portoviejo, Ecuador</span>
+          <span>@boccocitos</span>
+        </address>
+      </section>
+    </main>
+
+    <button class="back-to-top" type="button" aria-label="Subir al inicio">↑</button>
+
+    <div class="product-drawer" aria-hidden="true">
+      <button class="drawer-close" type="button" aria-label="Cerrar ficha">×</button>
+      <div class="drawer-content"></div>
     </div>
-  </footer>
-  
-  <!-- Scripts no críticos al final para mejor rendimiento -->
-  
-  <!-- Google Analytics optimizado con carga diferida -->
-  <script>
-    // Cargar Google Analytics de forma diferida para no bloquear
-    window.addEventListener('load', function() {
-      setTimeout(function() {
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.googletagmanager.com/gtag/js?id=G-RPVLT6BMEB','gtag');
-        
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-RPVLT6BMEB');
-      }, 2000); // Cargar después de 2 segundos
-    });
-  </script>
-  
-  <!-- Metricool Analytics con carga diferida -->
-  <script>
-    window.addEventListener('load', function() {
-      setTimeout(function() {
-        var script = document.createElement('script');
-        script.src = 'https://tracker.metricool.com/resources/be.js';
-        script.onload = function() {
-          if (typeof beTracker !== 'undefined') {
-            beTracker.t({hash:"c50c70cd70f64617f45370cd0bf6868d"});
-          }
-        };
-        document.head.appendChild(script);
-      }, 3000); // Cargar después de 3 segundos
-    });
-  </script>
-  
-  <!-- JavaScript mínimo optimizado para evitar tareas largas -->
-  <script>
-    // Optimización mínima para CLS - Solo lo esencial
-    document.addEventListener('DOMContentLoaded', function() {
-      // Fijar alturas de imágenes lazy de forma eficiente
-      requestAnimationFrame(() => {
-        const lazyImages = document.querySelectorAll('img[loading="lazy"]');
-        lazyImages.forEach(img => {
-          const height = img.getAttribute('height');
-          if (height && !img.style.minHeight) {
-            img.style.minHeight = height + 'px';
-          }
-        });
-      });
-      
-      // Menú móvil moderno
-      const menuToggle = document.getElementById('menu-toggle');
-      const menu = document.getElementById('menu');
-      
-      if (menuToggle && menu) {
-        menuToggle.addEventListener('click', function() {
-          menu.classList.toggle('active');
-          
-          // Animación del hamburger
-          const spans = menuToggle.querySelectorAll('span');
-          if (menu.classList.contains('active')) {
-            spans[0].style.transform = 'rotate(45deg) translate(6px, 6px)';
-            spans[1].style.opacity = '0';
-            spans[2].style.transform = 'rotate(-45deg) translate(6px, -6px)';
-          } else {
-            spans[0].style.transform = '';
-            spans[1].style.opacity = '';
-            spans[2].style.transform = '';
-          }
-        });
-        
-        // Cerrar menú al hacer click en un enlace
-        const menuLinks = menu.querySelectorAll('a');
-        menuLinks.forEach(link => {
-          link.addEventListener('click', () => {
-            menu.classList.remove('active');
-            const spans = menuToggle.querySelectorAll('span');
-            spans[0].style.transform = '';
-            spans[1].style.opacity = '';
-            spans[2].style.transform = '';
-          });
-        });
-      }
-    });
-    
-    // Service Worker minimalista - diferido al máximo
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        setTimeout(() => {
-          navigator.serviceWorker.register('/sw.js').catch(() => {});
-        }, 5000); // Cargar después de 5 segundos
-      });
-    }
-    
-    // Cache localStorage simple
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        if (typeof Storage !== "undefined") {
-          localStorage.setItem('boccocitos-v3', Date.now());
-        }
-      }, 1000);
-    });
-  </script>
-  </script>
-</body>
+    <div class="drawer-backdrop"></div>
+
+    <script src="script.js"></script>
+  </body>
 </html>

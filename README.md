@@ -1,16 +1,38 @@
-# BoccoCitos - E-commerce con PayPal
+# Boccocitos Web
 
-Sistema de e-commerce completo para BoccoCitos con integración de PayPal Standard Checkout.
+Landing page estática para Boccocitos, construida con HTML, CSS y JavaScript puro.
 
-## 🚀 Características
+## Estructura
 
-- ✅ Catálogo de productos con categorías (Tradicionales/Gourmet)
-- ✅ Carrito de compras funcional
-- ✅ Filtros por categoría
-- ✅ Integración completa con PayPal
-- ✅ Interfaz responsive
-- ✅ Persistencia del carrito en localStorage
-- ✅ Backend Node.js/Express
-- ✅ Manejo de errores y estados de carga
+- `index.html`: estructura principal de la página.
+- `styles.css`: estilos, responsive y animaciones.
+- `script.js`: productos, filtros, fichas interactivas y comportamiento dinámico.
+- `assets/brand/`: imágenes de marca y secciones.
+- `assets/products/`: imágenes de productos.
 
-**Desarrollado para BoccoCitos** 🌱
+## Publicación en GitHub Pages
+
+1. Sube este repositorio a GitHub.
+2. En GitHub entra a `Settings > Pages`.
+3. En `Build and deployment`, selecciona:
+   - Source: `Deploy from a branch`
+   - Branch: `main`
+   - Folder: `/root`
+4. Guarda los cambios.
+
+## Dominio personalizado
+
+Cuando tengas claro el dominio exacto:
+
+1. Duplica `CNAME.example`.
+2. Renombra la copia a `CNAME`.
+3. Reemplaza `tu-dominio.com` por tu dominio real, por ejemplo:
+
+```txt
+www.boccocitos.com
+```
+
+4. Sube el cambio a GitHub.
+5. Configura los DNS del dominio apuntando a GitHub Pages.
+
+Más detalles están en `DEPLOYMENT.md`.
